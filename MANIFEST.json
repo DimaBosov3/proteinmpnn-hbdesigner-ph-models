@@ -1,0 +1,26 @@
+{
+  "format": "proteinmpnn_hbdesigner_ph_release_v1",
+  "proteinmpnn": [
+    {
+      "name": "exp_063",
+      "checkpoint": "proteinmpnn/weights/exp_063.pt",
+      "requires_ph": true
+    },
+    {
+      "name": "exp_082",
+      "checkpoint": "proteinmpnn/weights/exp_082.pt",
+      "requires_ph": true
+    },
+    {
+      "name": "exp_085",
+      "checkpoint": "proteinmpnn/weights/exp_085.pt",
+      "requires_ph": true
+    }
+  ],
+  "hbdesigner": {
+    "name": "hbd_best",
+    "checkpoint": "hbdesigner/weights/hbd_best.pt",
+    "config": "hbdesigner/config/hbd_best.yaml",
+    "requires_ph": true
+  }
+}
