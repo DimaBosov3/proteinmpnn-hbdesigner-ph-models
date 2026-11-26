@@ -1,0 +1,5 @@
+# Install a CUDA-compatible PyTorch build for training.
+# Dependency constraints, not an exact reproduction lockfile.
+torch>=2.3
+numpy>=1.24
+python-dateutil>=2.8

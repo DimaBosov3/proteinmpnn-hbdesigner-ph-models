@@ -89,3 +89,7 @@ sha256sum ProteinMPNN_HBDesigner_pH_v1.tar.gz
 ```bash
 sha256sum -c SHA256SUMS
 ```
+
+## ProteinMPNN training source
+
+The standalone ProteinMPNN training project is available in [`proteinmpnn-training/`](proteinmpnn-training/README.md). It includes pH-conditioned training code for `exp_063`, `exp_082`, and `exp_085`, model and data-loading modules, checkpoint export, portable launch examples, and English documentation describing the training recipe and file locations.
