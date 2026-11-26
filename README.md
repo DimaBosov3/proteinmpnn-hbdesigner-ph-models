@@ -1,8 +1,8 @@
 # ProteinMPNN + HBDesigner: inference package
 
-Пакет содержит три модели ProteinMPNN — `exp_063`, `exp_082`, `exp_085` — и pH-aware HBDesigner. Во всех командах pH передаётся как непрерывное входное свойство.
+This package contains three ProteinMPNN models, `exp_063`, `exp_082`, and `exp_085`, together with pH-aware HBDesigner. All inference commands take pH as a continuous input.
 
-## Состав
+## Package contents
 
 - `proteinmpnn/weights/exp_063.pt`
 - `proteinmpnn/weights/exp_082.pt`
@@ -11,13 +11,13 @@
 - `proteinmpnn/parse_multiple_chains.py`
 - `hbdesigner/weights/hbd_best.pt`
 - `hbdesigner/config/hbd_best.yaml`
-- исходный inference-код HBDesigner и необходимые packing-веса
+- HBDesigner inference source code and the required packing weights
 
 ## ProteinMPNN
 
-Требования: Python 3.10+, PyTorch, NumPy.
+Requirements: Python 3.10+, PyTorch, and NumPy.
 
-Сначала положите один или несколько PDB в каталог `inputs/` и преобразуйте их в JSONL:
+Place one or more PDB files in the `inputs/` directory and convert them to JSONL:
 
 ```bash
 python proteinmpnn/parse_multiple_chains.py \
@@ -25,7 +25,7 @@ python proteinmpnn/parse_multiple_chains.py \
   --output_path parsed.jsonl
 ```
 
-Запуск `exp_063` при pH 6.5:
+Run `exp_063` at pH 6.5:
 
 ```bash
 python proteinmpnn/run_proteinmpnn.py \
@@ -37,24 +37,24 @@ python proteinmpnn/run_proteinmpnn.py \
   --sampling_temp 0.1
 ```
 
-Для двух остальных моделей замените имя файла на `exp_082.pt` или `exp_085.pt`. Чтобы проектировать только выбранные цепи, добавьте, например, `--chains_to_design A,C`. Если параметр не задан, проектируются все белковые цепи.
+For the other two models, replace the checkpoint filename with `exp_082.pt` or `exp_085.pt`. To design only selected chains, add an option such as `--chains_to_design A,C`. If this option is omitted, all protein chains are designed.
 
-Модель использует 27 состояний: 20 стандартных аминокислот, шесть альтернативных состояний `c/d/e/h/k/r` и `X`. Для каждого запуска создаются два FASTA:
+The model uses 27 states: 20 standard amino acids, six alternative states (`c/d/e/h/k/r`), and `X`. Each run produces two FASTA outputs:
 
-- `*_states.fasta` сохраняет предсказанные состояния;
-- `*_20aa.fasta` сворачивает строчные состояния в стандартные `C/D/E/H/K/R`.
+- `*_states.fasta` preserves the predicted states;
+- `*_20aa.fasta` maps lowercase states to the standard amino-acid symbols `C/D/E/H/K/R`.
 
-Аргумент `--ph` обязателен. Допустимый диапазон — 0–14; рекомендуемый рабочий диапазон — 2–11.
+The `--ph` argument is required. The accepted range is 0–14; the recommended operating range is 2–11.
 
 ## HBDesigner
 
-HBDesigner требует своё окружение с PyTorch, PyTorch Geometric, PyRosetta и зависимостями из `hbdesigner/env_gpu.yaml`. Установка кода:
+HBDesigner requires a separate environment with PyTorch, PyTorch Geometric, PyRosetta, and the dependencies listed in `hbdesigner/env_gpu.yaml`. Install the code with:
 
 ```bash
 python -m pip install -e hbdesigner
 ```
 
-Пример запуска при pH 6.5:
+Example run at pH 6.5:
 
 ```bash
 run_hbdesigner \
@@ -71,20 +71,20 @@ run_hbdesigner \
   --n_res 3
 ```
 
-`--ph` задаёт целевой pH для нейросети. Режим `--predicted_protonation_mode free` передаёт предсказанное состояние в Rosetta как начальное и разрешает перепаковку. Для ASP/GLU модель различает протонированное и депротонированное состояние, но не различает кислородные таутомеры P1/P2; политика задаётся явно через `--rosetta_acid_tautomer P1` или `P2`.
+`--ph` specifies the target pH for the neural network. The `--predicted_protonation_mode free` option passes the predicted state to Rosetta as an initial assignment and allows repacking. For ASP/GLU, the model distinguishes protonated and deprotonated states but does not distinguish the P1/P2 oxygen tautomers. Set this policy explicitly with `--rosetta_acid_tautomer P1` or `P2`.
 
-## Загрузка пакета
+## Download the package
 
-Полный архив опубликован в GitHub Releases как `ProteinMPNN_HBDesigner_pH_v1.tar.gz`.
+The complete archive, `ProteinMPNN_HBDesigner_pH_v1.tar.gz`, is available in [GitHub Releases](https://github.com/DimaBosov3/proteinmpnn-hbdesigner-ph-models/releases/tag/v1.0.0). The package paths above refer to files inside the extracted archive.
 
-Проверка архива:
+Verify the archive:
 
 ```bash
 sha256sum ProteinMPNN_HBDesigner_pH_v1.tar.gz
 # 0d921c36ea24db2f438e2791a9135cc3c7454f38d17e9c3e179ee7a4a7ba8f66
 ```
 
-После распаковки:
+After extracting the archive, verify its contents:
 
 ```bash
 sha256sum -c SHA256SUMS
